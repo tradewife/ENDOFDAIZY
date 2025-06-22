@@ -412,8 +412,8 @@ const HeroSection = () => {
               alt="Fallback Background"
               className="w-full object-cover opacity-0 rounded-2xl"
               style={{ 
-                minHeight: '80vh',
-                height: '80vh',
+                minHeight: '95vh',
+                height: '95vh',
                 objectFit: 'cover',
                 objectPosition: 'center'
               }}
