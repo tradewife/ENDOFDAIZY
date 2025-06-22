@@ -295,102 +295,118 @@ const Navigation = () => {
   );
 };
 
-// Hero Section - Smaller Text, Full Width Video
+// Hero Section - Animated Text Sequence and Improved Video Layout
 const HeroSection = () => {
   const { scrollY } = useScroll();
   const backgroundY = useTransform(scrollY, [0, 800], [0, 200]);
   
   const heroRef = useRef(null);
-  const headlineRef = useRef(null);
-  const subheadlineRef = useRef(null);
-  const learnMoreRef = useRef(null);
+  const textRef = useRef(null);
   
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isVideoLoading, setIsVideoLoading] = useState(true);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({ delay: 0.5 });
       
-      tl.fromTo([headlineRef.current, subheadlineRef.current], 
+      // Text sequence animation: IT'S YOUR WORLD → WE'RE JUST BUILDING IT → LEARN MORE
+      tl.fromTo(textRef.current, 
         { 
           opacity: 0, 
-          y: 50
+          y: 30
         },
         { 
           opacity: 1, 
           y: 0, 
-          duration: 1.2, 
-          stagger: 0.1, 
+          duration: 1, 
           ease: "power3.out" 
         }
-      );
-      
-      tl.fromTo(learnMoreRef.current, 
-        { 
-          opacity: 0, 
-          y: 20
-        },
-        { 
-          opacity: 1, 
-          y: 0, 
-          duration: 0.8, 
-          ease: "power2.out" 
-        }, 
-        "-=0.4"
-      );
+      )
+      .to(textRef.current, {
+        duration: 1.5,
+        delay: 1.5,
+        ease: "power2.inOut",
+        onComplete: () => {
+          textRef.current.textContent = "WE'RE JUST BUILDING IT";
+        }
+      })
+      .to(textRef.current, {
+        duration: 1.5,
+        delay: 1.5,
+        ease: "power2.inOut",
+        onComplete: () => {
+          textRef.current.textContent = "LEARN MORE";
+          textRef.current.style.color = '#00BFFF';
+          textRef.current.style.textShadow = '0 0 8px rgba(0, 191, 255, 0.5)';
+          textRef.current.style.cursor = 'pointer';
+          textRef.current.onclick = () => setIsModalOpen(true);
+        }
+      });
       
     }, heroRef);
 
-    return () => ctx.revert();
+    // Video loading simulation
+    const videoLoadTimer = setTimeout(() => {
+      setIsVideoLoading(false);
+    }, 2000);
+
+    return () => {
+      ctx.revert();
+      clearTimeout(videoLoadTimer);
+    };
   }, []);
 
   return (
     <section ref={heroRef} className="relative min-h-screen flex flex-col overflow-hidden bg-black">
       
-      {/* Top Section with Small Heading - Aligned with ENDofDAIZY */}
-      <div className="relative z-10 pt-32 pb-8">
+      {/* Compact Top Section with Animated Text */}
+      <div className="relative z-10 pt-20 pb-4">
         <div className="max-w-6xl mx-auto px-8">
-          {/* Small Heading - Left Aligned with ENDofDAIZY */}
           <div className="text-left">
             <h1
-              ref={headlineRef}
-              className="text-2xl md:text-3xl font-normal text-white mb-2 leading-tight tracking-normal opacity-0"
+              ref={textRef}
+              className="text-2xl md:text-3xl font-normal text-white leading-tight tracking-normal opacity-0 transition-all duration-300"
+              data-cursor="hover"
             >
               IT'S YOUR WORLD
             </h1>
-            
-            <h2
-              ref={subheadlineRef}
-              className="text-2xl md:text-3xl font-normal text-white mb-6 leading-tight tracking-normal opacity-0"
-            >
-              WE'RE JUST DESIGNING IT
-            </h2>
-
-            {/* Electric Blue Learn More Text */}
-            <div
-              ref={learnMoreRef}
-              onClick={() => setIsModalOpen(true)}
-              className="text-lg font-normal tracking-normal opacity-0 cursor-pointer hover:opacity-80 transition-opacity duration-300"
-              style={{ 
-                color: '#00BFFF',
-                textShadow: '0 0 8px rgba(0, 191, 255, 0.5)'
-              }}
-              data-cursor="hover"
-            >
-              LEARN MORE
-            </div>
           </div>
         </div>
       </div>
 
-      {/* Large Video Section - Aligned with Content Below */}
+      {/* Video Loading Overlay */}
+      {isVideoLoading && (
+        <div className="absolute inset-0 z-20 bg-black flex items-center justify-center">
+          <div className="flex flex-col items-center">
+            <div className="relative">
+              <div 
+                className="w-16 h-16 border-4 border-transparent border-t-[#00BFFF] rounded-full animate-spin"
+                style={{
+                  filter: 'drop-shadow(0 0 10px rgba(0, 191, 255, 0.3))'
+                }}
+              />
+              <div 
+                className="absolute inset-0 w-16 h-16 border-4 border-transparent border-r-[#00BFFF]/30 rounded-full animate-spin"
+                style={{
+                  animationDirection: 'reverse',
+                  animationDuration: '1.5s'
+                }}
+              />
+            </div>
+            <p className="text-white/60 text-sm mt-4 tracking-wide">Loading experience...</p>
+          </div>
+        </div>
+      )}
+
+      {/* Larger Video Section - Moved Higher */}
       <div className="flex-1 relative">
         <div className="max-w-6xl mx-auto px-8">
           <motion.div
             className="relative w-full"
             style={{ y: backgroundY }}
           >
-            {/* Background Video - Aligned with sections below */}
+            {/* Background Video - Bigger and Higher */}
             <iframe
               src="https://videos.sproutvideo.com/embed/7991dabb1e1de8ccf0/d596dc8976989f8d?playerTheme=dark&playerColor=2f3437&autoPlay=true&loop=true&showControls=false&muted=true"
               className="w-full object-cover rounded-2xl"
@@ -404,6 +420,7 @@ const HeroSection = () => {
               allow="autoplay; fullscreen"
               allowFullScreen
               title="Background Video"
+              onLoad={() => setIsVideoLoading(false)}
             />
             
             {/* Fallback for if video doesn't load */}
@@ -422,6 +439,7 @@ const HeroSection = () => {
                 if (!iframe || iframe.tagName !== 'IFRAME') {
                   e.target.style.opacity = '1';
                 }
+                setIsVideoLoading(false);
               }}
             />
             
