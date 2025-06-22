@@ -508,7 +508,7 @@ const PortfolioSection = () => {
                     ))}
                   </div>
                   <div className="flex justify-center items-center">
-                    <span className="text-[#BAA4FF] font-semibold text-xs tracking-wider mr-4">{project.category}</span>
+                    <span className="text-[#00BFFF] font-semibold text-xs tracking-wider mr-4">{project.category}</span>
                     <ArrowUpRight className="w-5 h-5 text-white/40 group-hover:text-white/70 transition-colors" />
                   </div>
                 </div>
