@@ -206,8 +206,8 @@ const ShootingStarCursor = () => {
           <div 
             className="w-1.5 h-1.5 rounded-full"
             style={{
-              background: `radial-gradient(circle, rgba(186, 164, 255, ${0.8 - index * 0.1}) 0%, transparent 70%)`,
-              boxShadow: `0 0 ${8 - index}px rgba(186, 164, 255, ${0.6 - index * 0.08})`
+              background: `radial-gradient(circle, rgba(0, 191, 255, ${0.8 - index * 0.1}) 0%, transparent 70%)`,
+              boxShadow: `0 0 ${8 - index}px rgba(0, 191, 255, ${0.6 - index * 0.08})`
             }}
           />
         </motion.div>
