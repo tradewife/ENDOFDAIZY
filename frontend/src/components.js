@@ -295,7 +295,7 @@ const Navigation = () => {
   );
 };
 
-// Hero Section - Full Background Video with Centered Text Animation
+// Hero Section - Full Background Video with Centered Typing Text Animation
 const HeroSection = () => {
   const { scrollY } = useScroll();
   const backgroundY = useTransform(scrollY, [0, 800], [0, 200]);
@@ -310,33 +310,51 @@ const HeroSection = () => {
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({ delay: 0.5 });
       
-      // Text sequence animation: IT'S YOUR WORLD → WE'RE JUST BUILDING IT → LEARN MORE
+      // Typing animation function
+      const typeText = (element, text, duration = 1.5) => {
+        element.textContent = '';
+        const chars = text.split('');
+        chars.forEach((char, index) => {
+          setTimeout(() => {
+            element.textContent += char;
+          }, (duration * 1000 / chars.length) * index);
+        });
+      };
+      
+      // Text sequence with typing effect: it's your world → we're just building it → learn more
       tl.fromTo(textRef.current, 
         { 
           opacity: 0, 
-          y: 30
+          y: 20
         },
         { 
           opacity: 1, 
           y: 0, 
-          duration: 1, 
-          ease: "power3.out" 
+          duration: 0.8, 
+          ease: "power3.out",
+          onComplete: () => {
+            typeText(textRef.current, "it's your world", 1.5);
+          }
         }
       )
       .to(textRef.current, {
-        duration: 1.5,
-        delay: 1.5,
+        duration: 2,
+        delay: 2.5,
         ease: "power2.inOut",
-        onComplete: () => {
-          textRef.current.textContent = "WE'RE JUST BUILDING IT";
+        onStart: () => {
+          textRef.current.textContent = '';
+          typeText(textRef.current, "we're just building it", 2);
         }
       })
       .to(textRef.current, {
-        duration: 1.5,
-        delay: 1.5,
+        duration: 2,
+        delay: 2.5,
         ease: "power2.inOut",
+        onStart: () => {
+          textRef.current.textContent = '';
+          typeText(textRef.current, "learn more", 1.5);
+        },
         onComplete: () => {
-          textRef.current.textContent = "LEARN MORE";
           textRef.current.style.color = '#00BFFF';
           textRef.current.style.textShadow = '0 0 20px rgba(0, 191, 255, 0.8), 0 0 40px rgba(0, 191, 255, 0.4)';
           textRef.current.style.cursor = 'pointer';
@@ -429,19 +447,35 @@ const HeroSection = () => {
         </div>
       )}
 
-      {/* Centered Text Title Sequence */}
-      <div className="relative z-10 text-center px-8">
+      {/* Centered Typing Text - Positioned Higher */}
+      <div className="relative z-10 text-center px-8" style={{ transform: 'translateY(-15vh)' }}>
         <h1
           ref={textRef}
-          className="text-4xl md:text-6xl lg:text-7xl font-bold text-white leading-tight tracking-wide opacity-0 transition-all duration-300"
+          className="text-2xl md:text-3xl lg:text-4xl font-normal text-white leading-tight tracking-wide opacity-0 transition-all duration-300"
           style={{
-            textShadow: '0 0 30px rgba(0, 0, 0, 0.8), 0 4px 8px rgba(0, 0, 0, 0.6), 0 0 60px rgba(255, 255, 255, 0.1)'
+            textShadow: '0 0 30px rgba(0, 0, 0, 0.8), 0 4px 8px rgba(0, 0, 0, 0.6), 0 0 60px rgba(255, 255, 255, 0.1)',
+            fontFamily: 'monospace',
+            minHeight: '1.5em'
           }}
           data-cursor="hover"
         >
-          IT'S YOUR WORLD
         </h1>
+        {/* Typing cursor effect */}
+        <span 
+          className="inline-block w-0.5 h-8 md:h-10 lg:h-12 bg-white ml-1 animate-pulse"
+          style={{
+            animation: 'blink 1s infinite'
+          }}
+        />
       </div>
+
+      {/* CSS for blinking cursor */}
+      <style jsx>{`
+        @keyframes blink {
+          0%, 50% { opacity: 1; }
+          51%, 100% { opacity: 0; }
+        }
+      `}</style>
 
       {/* Email Capture Modal */}
       <EmailCaptureModal 
