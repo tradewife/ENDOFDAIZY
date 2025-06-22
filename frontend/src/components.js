@@ -295,15 +295,20 @@ const Navigation = () => {
   );
 };
 
-// Hero Section - Full Screen Video Background with Typing Animation
+// Hero Section - Video Background with End State Animation
 const HeroSection = () => {
   const { scrollY } = useScroll();
   const backgroundY = useTransform(scrollY, [0, 800], [0, 200]);
   
   const heroRef = useRef(null);
   const textRef = useRef(null);
+  const videoRef = useRef(null);
+  const endStateRef = useRef(null);
+  const headingRef = useRef(null);
+  const buttonRef = useRef(null);
   
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [videoEnded, setVideoEnded] = useState(false);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -386,7 +391,57 @@ const HeroSection = () => {
       
     }, heroRef);
 
-    return () => ctx.revert();
+    // Video end simulation (since we can't detect iframe video end)
+    const videoEndTimer = setTimeout(() => {
+      setVideoEnded(true);
+      
+      // Animate end state
+      const endTl = gsap.timeline();
+      
+      // Fade to black
+      endTl.to(endStateRef.current, {
+        opacity: 1,
+        duration: 2,
+        ease: "power2.inOut"
+      })
+      // Animate heading
+      .fromTo(headingRef.current, 
+        { 
+          opacity: 0, 
+          y: 50,
+          scale: 0.9
+        },
+        { 
+          opacity: 1, 
+          y: 0, 
+          scale: 1,
+          duration: 1.5, 
+          ease: "power3.out" 
+        }
+      )
+      // Animate button
+      .fromTo(buttonRef.current, 
+        { 
+          opacity: 0, 
+          y: 30,
+          scale: 0.9
+        },
+        { 
+          opacity: 1, 
+          y: 0, 
+          scale: 1,
+          duration: 1, 
+          ease: "power2.out" 
+        }, 
+        "-=0.5"
+      );
+      
+    }, 15000); // 15 seconds to simulate video end
+
+    return () => {
+      ctx.revert();
+      clearTimeout(videoEndTimer);
+    };
   }, []);
 
   return (
@@ -398,7 +453,8 @@ const HeroSection = () => {
         style={{ y: backgroundY }}
       >
         <iframe
-          src="https://videos.sproutvideo.com/embed/4491dabb181de4cfcd/66ebad5c1e2bc0b5?playerTheme=dark&playerColor=2f3437&autoPlay=true&loop=true&showControls=false&muted=true"
+          ref={videoRef}
+          src="https://videos.sproutvideo.com/embed/4491dabb181de4cfcd/66ebad5c1e2bc0b5?playerTheme=dark&playerColor=2f3437&autoPlay=true&showControls=false&muted=true"
           className="w-full h-full"
           style={{ 
             width: '100vw',
@@ -416,20 +472,61 @@ const HeroSection = () => {
         <div className="absolute inset-0 bg-black/40" />
       </motion.div>
 
+      {/* Fade to Black Overlay */}
+      <div 
+        ref={endStateRef}
+        className="absolute inset-0 bg-black opacity-0 z-10"
+      />
+
       {/* Centered Typing Text - Positioned Higher */}
-      <div className="relative z-20 text-center px-8" style={{ transform: 'translateY(-15vh)' }}>
-        <h1
-          ref={textRef}
-          className="text-2xl md:text-3xl lg:text-4xl font-normal text-white leading-tight tracking-wide opacity-0 transition-all duration-300"
-          style={{
-            textShadow: '0 0 30px rgba(0, 0, 0, 0.8), 0 4px 8px rgba(0, 0, 0, 0.6), 0 0 60px rgba(255, 255, 255, 0.1)',
-            fontFamily: 'monospace',
-            minHeight: '1.5em'
-          }}
-          data-cursor="hover"
-        >
-        </h1>
-      </div>
+      {!videoEnded && (
+        <div className="relative z-20 text-center px-8" style={{ transform: 'translateY(-15vh)' }}>
+          <h1
+            ref={textRef}
+            className="text-2xl md:text-3xl lg:text-4xl font-normal text-white leading-tight tracking-wide opacity-0 transition-all duration-300"
+            style={{
+              textShadow: '0 0 30px rgba(0, 0, 0, 0.8), 0 4px 8px rgba(0, 0, 0, 0.6), 0 0 60px rgba(255, 255, 255, 0.1)',
+              fontFamily: 'monospace',
+              minHeight: '1.5em'
+            }}
+            data-cursor="hover"
+          >
+          </h1>
+        </div>
+      )}
+
+      {/* End State Content */}
+      {videoEnded && (
+        <div className="relative z-20 text-center px-8">
+          <h1
+            ref={headingRef}
+            className="text-3xl md:text-5xl lg:text-6xl font-bold text-white leading-tight tracking-wide mb-12 opacity-0"
+            style={{
+              textShadow: '0 0 30px rgba(0, 0, 0, 0.8), 0 4px 8px rgba(0, 0, 0, 0.6)'
+            }}
+          >
+            BESPOKE WEB DESIGN<br />
+            <span className="block mt-4">ROBUST DEVELOPMENT</span>
+          </h1>
+          
+          <motion.button
+            ref={buttonRef}
+            onClick={() => setIsModalOpen(true)}
+            className="bg-[#00BFFF] text-black px-12 py-4 text-lg font-bold tracking-wide hover:bg-[#00BFFF]/90 transition-all duration-500 opacity-0"
+            style={{
+              boxShadow: '0 0 30px rgba(0, 191, 255, 0.4), 0 8px 16px rgba(0, 0, 0, 0.3)'
+            }}
+            whileHover={{ 
+              scale: 1.05, 
+              boxShadow: '0 0 40px rgba(0, 191, 255, 0.6), 0 12px 24px rgba(0, 0, 0, 0.4)'
+            }}
+            whileTap={{ scale: 0.98 }}
+            data-cursor="hover"
+          >
+            LET'S TALK
+          </motion.button>
+        </div>
+      )}
 
       {/* Email Capture Modal */}
       <EmailCaptureModal 
