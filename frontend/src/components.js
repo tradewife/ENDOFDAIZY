@@ -295,7 +295,7 @@ const Navigation = () => {
   );
 };
 
-// Hero Section - Full Screen Video with Black Loading and Typing Text
+// Hero Section - Full Screen Video with Text Color Changes and Dispersal Effect
 const HeroSection = () => {
   const { scrollY } = useScroll();
   const backgroundY = useTransform(scrollY, [0, 800], [0, 200]);
@@ -321,7 +321,7 @@ const HeroSection = () => {
         });
       };
       
-      // Text sequence with typing effect: it's your world → we're just building it
+      // Text sequence with typing effect and color changes
       tl.fromTo(textRef.current, 
         { 
           opacity: 0, 
@@ -343,16 +343,74 @@ const HeroSection = () => {
         ease: "power2.inOut",
         onStart: () => {
           textRef.current.textContent = '';
-          typeText(textRef.current, "we're just building it", 2);
+          typeText(textRef.current, "we're building it", 2);
+        }
+      })
+      // Color change to yellow
+      .to(textRef.current, {
+        duration: 0.5,
+        delay: 1,
+        ease: "power2.inOut",
+        onStart: () => {
+          textRef.current.style.color = '#FFD700';
+          textRef.current.style.textShadow = '0 0 20px rgba(255, 215, 0, 0.6), 0 0 40px rgba(255, 215, 0, 0.3)';
+        }
+      })
+      // Color change to blue
+      .to(textRef.current, {
+        duration: 0.5,
+        delay: 0.5,
+        ease: "power2.inOut",
+        onStart: () => {
+          textRef.current.style.color = '#00BFFF';
+          textRef.current.style.textShadow = '0 0 20px rgba(0, 191, 255, 0.6), 0 0 40px rgba(0, 191, 255, 0.3)';
+        }
+      })
+      // Dispersal effect
+      .to(textRef.current, {
+        duration: 1.5,
+        delay: 0.5,
+        ease: "power2.in",
+        y: 100,
+        opacity: 0,
+        scale: 1.2,
+        rotationX: 15,
+        filter: "blur(10px)",
+        onStart: () => {
+          // Create character dispersal effect
+          const text = textRef.current.textContent;
+          const chars = text.split('');
+          textRef.current.innerHTML = '';
+          
+          chars.forEach((char, index) => {
+            const span = document.createElement('span');
+            span.textContent = char === ' ' ? '\u00A0' : char;
+            span.style.display = 'inline-block';
+            span.style.color = '#00BFFF';
+            span.style.textShadow = '0 0 20px rgba(0, 191, 255, 0.6)';
+            textRef.current.appendChild(span);
+            
+            // Animate each character individually
+            gsap.to(span, {
+              duration: 1.5,
+              delay: index * 0.05,
+              y: Math.random() * 200 + 50,
+              x: (Math.random() - 0.5) * 100,
+              rotation: Math.random() * 360,
+              opacity: 0,
+              scale: 0.3,
+              ease: "power2.in"
+            });
+          });
         }
       });
       
     }, heroRef);
 
-    // Video loading simulation - longer to allow text typing
+    // Video loading simulation - 8 seconds to allow full text sequence
     const videoLoadTimer = setTimeout(() => {
       setIsVideoLoading(false);
-    }, 8000); // 8 seconds to allow full text sequence
+    }, 8000);
 
     return () => {
       ctx.revert();
@@ -378,7 +436,7 @@ const HeroSection = () => {
             objectPosition: 'center',
             border: 'none',
             opacity: isVideoLoading ? 0 : 1,
-            transition: 'opacity 1s ease-in-out'
+            transition: 'opacity 1.5s ease-in-out'
           }}
           allow="autoplay; fullscreen"
           allowFullScreen
@@ -399,7 +457,7 @@ const HeroSection = () => {
             objectFit: 'cover',
             objectPosition: 'center',
             opacity: isVideoLoading ? 0 : 1,
-            transition: 'opacity 1s ease-in-out'
+            transition: 'opacity 1.5s ease-in-out'
           }}
           onLoad={(e) => {
             const iframe = e.target.previousElementSibling;
@@ -433,22 +491,7 @@ const HeroSection = () => {
           data-cursor="hover"
         >
         </h1>
-        {/* Typing cursor effect */}
-        <span 
-          className="inline-block w-0.5 h-8 md:h-10 lg:h-12 bg-white ml-1 animate-pulse"
-          style={{
-            animation: 'blink 1s infinite'
-          }}
-        />
       </div>
-
-      {/* CSS for blinking cursor */}
-      <style jsx>{`
-        @keyframes blink {
-          0%, 50% { opacity: 1; }
-          51%, 100% { opacity: 0; }
-        }
-      `}</style>
 
       {/* Email Capture Modal */}
       <EmailCaptureModal 
