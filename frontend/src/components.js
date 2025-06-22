@@ -295,7 +295,7 @@ const Navigation = () => {
   );
 };
 
-// Hero Section - Full Background Video with Centered Typing Text Animation
+// Hero Section - Full Screen Video with Black Loading and Typing Text
 const HeroSection = () => {
   const { scrollY } = useScroll();
   const backgroundY = useTransform(scrollY, [0, 800], [0, 200]);
@@ -321,7 +321,7 @@ const HeroSection = () => {
         });
       };
       
-      // Text sequence with typing effect: it's your world → we're just building it → learn more
+      // Text sequence with typing effect: it's your world → we're just building it
       tl.fromTo(textRef.current, 
         { 
           opacity: 0, 
@@ -339,35 +339,20 @@ const HeroSection = () => {
       )
       .to(textRef.current, {
         duration: 2,
-        delay: 2.5,
+        delay: 3,
         ease: "power2.inOut",
         onStart: () => {
           textRef.current.textContent = '';
           typeText(textRef.current, "we're just building it", 2);
         }
-      })
-      .to(textRef.current, {
-        duration: 2,
-        delay: 2.5,
-        ease: "power2.inOut",
-        onStart: () => {
-          textRef.current.textContent = '';
-          typeText(textRef.current, "learn more", 1.5);
-        },
-        onComplete: () => {
-          textRef.current.style.color = '#00BFFF';
-          textRef.current.style.textShadow = '0 0 20px rgba(0, 191, 255, 0.8), 0 0 40px rgba(0, 191, 255, 0.4)';
-          textRef.current.style.cursor = 'pointer';
-          textRef.current.onclick = () => setIsModalOpen(true);
-        }
       });
       
     }, heroRef);
 
-    // Video loading simulation
+    // Video loading simulation - longer to allow text typing
     const videoLoadTimer = setTimeout(() => {
       setIsVideoLoading(false);
-    }, 2000);
+    }, 8000); // 8 seconds to allow full text sequence
 
     return () => {
       ctx.revert();
@@ -378,7 +363,7 @@ const HeroSection = () => {
   return (
     <section ref={heroRef} className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black">
       
-      {/* Full Background Video */}
+      {/* Full Screen Background Video */}
       <motion.div
         className="absolute inset-0 w-full h-full"
         style={{ y: backgroundY }}
@@ -391,64 +376,52 @@ const HeroSection = () => {
             height: '100vh',
             objectFit: 'cover',
             objectPosition: 'center',
-            border: 'none'
+            border: 'none',
+            opacity: isVideoLoading ? 0 : 1,
+            transition: 'opacity 1s ease-in-out'
           }}
           allow="autoplay; fullscreen"
           allowFullScreen
           title="Background Video"
-          onLoad={() => setIsVideoLoading(false)}
+          onLoad={() => {
+            // Don't set loading to false immediately, let timer handle it
+          }}
         />
         
         {/* Fallback for if video doesn't load */}
         <img 
           src="https://i.imgur.com/XkjW9Uv.jpeg"
           alt="Fallback Background"
-          className="w-full h-full object-cover opacity-0"
+          className="w-full h-full object-cover"
           style={{ 
             width: '100vw',
             height: '100vh',
             objectFit: 'cover',
-            objectPosition: 'center'
+            objectPosition: 'center',
+            opacity: isVideoLoading ? 0 : 1,
+            transition: 'opacity 1s ease-in-out'
           }}
           onLoad={(e) => {
             const iframe = e.target.previousElementSibling;
             if (!iframe || iframe.tagName !== 'IFRAME') {
-              e.target.style.opacity = '1';
+              // Only show fallback if iframe failed, still wait for timer
             }
-            setIsVideoLoading(false);
           }}
         />
         
-        {/* Dark overlay for text visibility */}
-        <div className="absolute inset-0 bg-black/40" />
+        {/* Dark overlay for text visibility - only when video is visible */}
+        {!isVideoLoading && (
+          <div className="absolute inset-0 bg-black/40" />
+        )}
       </motion.div>
 
-      {/* Video Loading Overlay */}
+      {/* Black Background During Loading */}
       {isVideoLoading && (
-        <div className="absolute inset-0 z-20 bg-black flex items-center justify-center">
-          <div className="flex flex-col items-center">
-            <div className="relative">
-              <div 
-                className="w-16 h-16 border-4 border-transparent border-t-[#00BFFF] rounded-full animate-spin"
-                style={{
-                  filter: 'drop-shadow(0 0 10px rgba(0, 191, 255, 0.3))'
-                }}
-              />
-              <div 
-                className="absolute inset-0 w-16 h-16 border-4 border-transparent border-r-[#00BFFF]/30 rounded-full animate-spin"
-                style={{
-                  animationDirection: 'reverse',
-                  animationDuration: '1.5s'
-                }}
-              />
-            </div>
-            <p className="text-white/60 text-sm mt-4 tracking-wide">Loading experience...</p>
-          </div>
-        </div>
+        <div className="absolute inset-0 z-10 bg-black" />
       )}
 
       {/* Centered Typing Text - Positioned Higher */}
-      <div className="relative z-10 text-center px-8" style={{ transform: 'translateY(-15vh)' }}>
+      <div className="relative z-20 text-center px-8" style={{ transform: 'translateY(-15vh)' }}>
         <h1
           ref={textRef}
           className="text-2xl md:text-3xl lg:text-4xl font-normal text-white leading-tight tracking-wide opacity-0 transition-all duration-300"
