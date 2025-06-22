@@ -85,7 +85,7 @@ const EmailCaptureModal = ({ isOpen, onClose }) => {
                     placeholder="Your name"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-white/50 focus:border-[#BAA4FF] focus:outline-none transition-colors"
+                    className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-white/50 focus:border-[#00BFFF] focus:outline-none transition-colors"
                     required
                   />
                 </div>
