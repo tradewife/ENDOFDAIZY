@@ -700,7 +700,7 @@ const Footer = () => {
           </h3>
           <motion.button
             onClick={() => setIsModalOpen(true)}
-            className="bg-[#BAA4FF] text-black px-10 py-4 text-sm font-medium tracking-wide hover:bg-[#BAA4FF]/90 transition-all duration-500 mb-16"
+            className="bg-[#00BFFF] text-black px-10 py-4 text-sm font-medium tracking-wide hover:bg-[#00BFFF]/90 transition-all duration-500 mb-16"
             whileHover={{ scale: 1.02, y: -2 }}
             whileTap={{ scale: 0.98 }}
             data-cursor="hover"
