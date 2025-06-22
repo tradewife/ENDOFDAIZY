@@ -343,33 +343,33 @@ const HeroSection = () => {
         ease: "power2.inOut",
         onStart: () => {
           textRef.current.textContent = '';
-          typeText(textRef.current, "we're building it", 2);
+          typeText(textRef.current, "we're just building it", 2);
         }
       })
-      // Color change to yellow
+      // Color change to yellow - earlier timing
       .to(textRef.current, {
-        duration: 0.5,
-        delay: 1,
+        duration: 0.4,
+        delay: 0.5,
         ease: "power2.inOut",
         onStart: () => {
           textRef.current.style.color = '#FFD700';
           textRef.current.style.textShadow = '0 0 20px rgba(255, 215, 0, 0.6), 0 0 40px rgba(255, 215, 0, 0.3)';
         }
       })
-      // Color change to blue
+      // Color change to blue - earlier timing
       .to(textRef.current, {
-        duration: 0.5,
-        delay: 0.5,
+        duration: 0.4,
+        delay: 0.3,
         ease: "power2.inOut",
         onStart: () => {
           textRef.current.style.color = '#00BFFF';
           textRef.current.style.textShadow = '0 0 20px rgba(0, 191, 255, 0.6), 0 0 40px rgba(0, 191, 255, 0.3)';
         }
       })
-      // Dispersal effect
+      // Dispersal effect - starts earlier
       .to(textRef.current, {
         duration: 1.5,
-        delay: 0.5,
+        delay: 0.2,
         ease: "power2.in",
         y: 100,
         opacity: 0,
