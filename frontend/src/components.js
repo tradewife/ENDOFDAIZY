@@ -469,9 +469,9 @@ const PortfolioSection = () => {
             >
               <div className="bg-[#1a1a1a]/60 backdrop-blur-sm border border-white/5 overflow-hidden hover:bg-[#222]/70 hover:border-white/10 transition-all duration-500">
                 
-                <div className="relative h-80 overflow-hidden">
+                <div className="relative overflow-hidden" style={{ height: project.hasVideo ? '500px' : '320px' }}>
                   {project.hasVideo ? (
-                    // Video for first project
+                    // Large Video for first project
                     <iframe
                       src={project.videoSrc}
                       className="w-full h-full object-cover"
