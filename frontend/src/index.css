@@ -1,17 +1,190 @@
+@import url('https://fonts.googleapis.com/css2?family=Helvetica+Neue:wght@100;200;300;400;500;600;700&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-body {
-    margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
-        "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
-        "Helvetica Neue", sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+* {
+    cursor: none !important;
 }
 
-code {
-    font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-        monospace;
+@layer base {
+  html {
+    font-family: 'Helvetica Neue', 'Helvetica', system-ui, sans-serif;
+    scroll-behavior: smooth;
+    font-feature-settings: 'cv01', 'cv02', 'cv03', 'cv04';
+  }
+  
+  body {
+    margin: 0;
+    background-color: #0a0a0a;
+    color: #ffffff;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-synthesis-weight: none;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+    line-height: 1.6;
+    letter-spacing: -0.01em;
+    font-weight: 300;
+  }
+}
+
+/* Premium scrollbar */
+::-webkit-scrollbar {
+  width: 2px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 191, 255, 0.2);
+  border-radius: 1px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 191, 255, 0.4);
+}
+
+/* Text selection */
+::selection {
+  background-color: rgba(0, 191, 255, 0.2);
+  color: #ffffff;
+}
+
+/* Electric blue scanning animation */
+@keyframes scan {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(200%); }
+}
+
+/* Elegant font rendering */
+.font-elegant {
+  font-weight: 200;
+  letter-spacing: 0.02em;
+}
+
+.font-light {
+  font-weight: 200;
+  letter-spacing: 0.01em;
+}
+
+.font-normal {
+  font-weight: 300;
+  letter-spacing: 0.005em;
+}
+
+.tracking-tight {
+  letter-spacing: -0.01em;
+}
+
+.tracking-wide {
+  letter-spacing: 0.02em;
+}
+
+.tracking-wider {
+  letter-spacing: 0.05em;
+}
+
+/* Backdrop blur polyfill */
+@supports not (backdrop-filter: blur(1px)) {
+  .backdrop-blur-sm {
+    background-color: rgba(0, 0, 0, 0.8);
+  }
+  .backdrop-blur-md {
+    background-color: rgba(0, 0, 0, 0.9);
+  }
+}
+
+/* Enhanced glow effects for electric blue theme */
+.electric-glow {
+  box-shadow: 0 0 20px rgba(0, 191, 255, 0.3);
+  transition: box-shadow 0.3s ease;
+}
+
+.electric-glow:hover {
+  box-shadow: 0 0 30px rgba(0, 191, 255, 0.5);
+}
+
+/* Premium animations */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* Enhanced focus states */
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid rgba(0, 191, 255, 0.5);
+  outline-offset: 2px;
+}
+
+/* Premium gradient effects */
+.premium-gradient {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0.05) 50%,
+    rgba(255, 255, 255, 0.02) 100%
+  );
+}
+
+/* Elegant typography scale */
+.text-hero {
+  font-size: clamp(2rem, 6vw, 4rem);
+  line-height: 1.1;
+  font-weight: 200;
+  letter-spacing: -0.01em;
+}
+
+/* Smooth transitions */
+* {
+  transition-property: color, background-color, border-color, opacity, transform;
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  transition-duration: 300ms;
+}
+
+/* Enhanced hover states */
+[data-cursor="hover"]:hover {
+  transform: translateY(-1px);
+}
+
+/* Refined borders */
+.border-refined {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.border-refined:hover {
+  border-color: rgba(255, 255, 255, 0.16);
+}
+
+/* GSAP animation classes */
+.gsap-fade-in {
+  opacity: 0;
+  transform: translateY(50px);
+}
+
+.gsap-slide-up {
+  opacity: 0;
+  transform: translateY(100px);
+}
+
+.gsap-scale-in {
+  opacity: 0;
+  transform: scale(0.8);
+}
+
+.gsap-slide-left {
+  opacity: 0;
+  transform: translateX(-50px);
+}
+
+.gsap-slide-right {
+  opacity: 0;
+  transform: translateX(50px);
 }
