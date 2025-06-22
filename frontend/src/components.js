@@ -295,7 +295,7 @@ const Navigation = () => {
   );
 };
 
-// Hero Section - Animated Text Sequence and Improved Video Layout
+// Hero Section - Full Background Video with Centered Text Animation
 const HeroSection = () => {
   const { scrollY } = useScroll();
   const backgroundY = useTransform(scrollY, [0, 800], [0, 200]);
@@ -338,7 +338,7 @@ const HeroSection = () => {
         onComplete: () => {
           textRef.current.textContent = "LEARN MORE";
           textRef.current.style.color = '#00BFFF';
-          textRef.current.style.textShadow = '0 0 8px rgba(0, 191, 255, 0.5)';
+          textRef.current.style.textShadow = '0 0 20px rgba(0, 191, 255, 0.8), 0 0 40px rgba(0, 191, 255, 0.4)';
           textRef.current.style.cursor = 'pointer';
           textRef.current.onclick = () => setIsModalOpen(true);
         }
@@ -358,22 +358,52 @@ const HeroSection = () => {
   }, []);
 
   return (
-    <section ref={heroRef} className="relative min-h-screen flex flex-col overflow-hidden bg-black">
+    <section ref={heroRef} className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black">
       
-      {/* Compact Top Section with Animated Text */}
-      <div className="relative z-10 pt-20 pb-4">
-        <div className="max-w-6xl mx-auto px-8">
-          <div className="text-left">
-            <h1
-              ref={textRef}
-              className="text-2xl md:text-3xl font-normal text-white leading-tight tracking-normal opacity-0 transition-all duration-300"
-              data-cursor="hover"
-            >
-              IT'S YOUR WORLD
-            </h1>
-          </div>
-        </div>
-      </div>
+      {/* Full Background Video */}
+      <motion.div
+        className="absolute inset-0 w-full h-full"
+        style={{ y: backgroundY }}
+      >
+        <iframe
+          src="https://videos.sproutvideo.com/embed/7991dabb1e1de8ccf0/d596dc8976989f8d?playerTheme=dark&playerColor=2f3437&autoPlay=true&loop=true&showControls=false&muted=true"
+          className="w-full h-full object-cover"
+          style={{ 
+            width: '100vw',
+            height: '100vh',
+            objectFit: 'cover',
+            objectPosition: 'center',
+            border: 'none'
+          }}
+          allow="autoplay; fullscreen"
+          allowFullScreen
+          title="Background Video"
+          onLoad={() => setIsVideoLoading(false)}
+        />
+        
+        {/* Fallback for if video doesn't load */}
+        <img 
+          src="https://i.imgur.com/XkjW9Uv.jpeg"
+          alt="Fallback Background"
+          className="w-full h-full object-cover opacity-0"
+          style={{ 
+            width: '100vw',
+            height: '100vh',
+            objectFit: 'cover',
+            objectPosition: 'center'
+          }}
+          onLoad={(e) => {
+            const iframe = e.target.previousElementSibling;
+            if (!iframe || iframe.tagName !== 'IFRAME') {
+              e.target.style.opacity = '1';
+            }
+            setIsVideoLoading(false);
+          }}
+        />
+        
+        {/* Dark overlay for text visibility */}
+        <div className="absolute inset-0 bg-black/40" />
+      </motion.div>
 
       {/* Video Loading Overlay */}
       {isVideoLoading && (
@@ -399,54 +429,18 @@ const HeroSection = () => {
         </div>
       )}
 
-      {/* Larger Video Section - Moved Higher */}
-      <div className="flex-1 relative">
-        <div className="max-w-6xl mx-auto px-8">
-          <motion.div
-            className="relative w-full"
-            style={{ y: backgroundY }}
-          >
-            {/* Background Video - Bigger and Higher */}
-            <iframe
-              src="https://videos.sproutvideo.com/embed/7991dabb1e1de8ccf0/d596dc8976989f8d?playerTheme=dark&playerColor=2f3437&autoPlay=true&loop=true&showControls=false&muted=true"
-              className="w-full object-cover rounded-2xl"
-              style={{ 
-                minHeight: '95vh',
-                height: '95vh',
-                objectFit: 'cover',
-                objectPosition: 'center',
-                border: 'none'
-              }}
-              allow="autoplay; fullscreen"
-              allowFullScreen
-              title="Background Video"
-              onLoad={() => setIsVideoLoading(false)}
-            />
-            
-            {/* Fallback for if video doesn't load */}
-            <img 
-              src="https://i.imgur.com/XkjW9Uv.jpeg"
-              alt="Fallback Background"
-              className="w-full object-cover opacity-0 rounded-2xl"
-              style={{ 
-                minHeight: '95vh',
-                height: '95vh',
-                objectFit: 'cover',
-                objectPosition: 'center'
-              }}
-              onLoad={(e) => {
-                const iframe = e.target.previousElementSibling;
-                if (!iframe || iframe.tagName !== 'IFRAME') {
-                  e.target.style.opacity = '1';
-                }
-                setIsVideoLoading(false);
-              }}
-            />
-            
-            {/* Minimal overlay for depth */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent rounded-2xl" />
-          </motion.div>
-        </div>
+      {/* Centered Text Title Sequence */}
+      <div className="relative z-10 text-center px-8">
+        <h1
+          ref={textRef}
+          className="text-4xl md:text-6xl lg:text-7xl font-bold text-white leading-tight tracking-wide opacity-0 transition-all duration-300"
+          style={{
+            textShadow: '0 0 30px rgba(0, 0, 0, 0.8), 0 4px 8px rgba(0, 0, 0, 0.6), 0 0 60px rgba(255, 255, 255, 0.1)'
+          }}
+          data-cursor="hover"
+        >
+          IT'S YOUR WORLD
+        </h1>
       </div>
 
       {/* Email Capture Modal */}
