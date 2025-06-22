@@ -122,7 +122,7 @@ const EmailCaptureModal = ({ isOpen, onClose }) => {
                   </button>
                   <button
                     type="submit"
-                    className="flex-1 bg-[#BAA4FF] text-black px-6 py-3 rounded-lg font-medium hover:bg-[#BAA4FF]/90 transition-colors"
+                    className="flex-1 bg-[#00BFFF] text-black px-6 py-3 rounded-lg font-medium hover:bg-[#00BFFF]/90 transition-colors"
                     data-cursor="hover"
                   >
                     Send Message
