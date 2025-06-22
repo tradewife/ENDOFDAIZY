@@ -383,52 +383,52 @@ const HeroSection = () => {
         </div>
       </div>
 
-      {/* Large Full Width Video Section */}
-      <div className="flex-1 relative w-full">
-        <motion.div
-          className="absolute inset-0 w-full"
-          style={{ y: backgroundY }}
-        >
-          {/* Full Width Background Video */}
-          <iframe
-            src="https://videos.sproutvideo.com/embed/7991dabb1e1de8ccf0/d596dc8976989f8d?playerTheme=dark&playerColor=2f3437&autoPlay=true&loop=true&showControls=false&muted=true"
-            className="w-full h-full object-cover"
-            style={{ 
-              minHeight: '70vh',
-              width: '100vw',
-              height: '70vh',
-              objectFit: 'cover',
-              objectPosition: 'center',
-              border: 'none'
-            }}
-            allow="autoplay; fullscreen"
-            allowFullScreen
-            title="Background Video"
-          />
-          
-          {/* Fallback for if video doesn't load */}
-          <img 
-            src="https://i.imgur.com/XkjW9Uv.jpeg"
-            alt="Fallback Background"
-            className="w-full h-full object-cover opacity-0"
-            style={{ 
-              minHeight: '70vh',
-              width: '100vw',
-              height: '70vh',
-              objectFit: 'cover',
-              objectPosition: 'center'
-            }}
-            onLoad={(e) => {
-              const iframe = e.target.previousElementSibling;
-              if (!iframe || iframe.tagName !== 'IFRAME') {
-                e.target.style.opacity = '1';
-              }
-            }}
-          />
-          
-          {/* Minimal overlay for depth */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
-        </motion.div>
+      {/* Large Video Section - Aligned with Content Below */}
+      <div className="flex-1 relative">
+        <div className="max-w-6xl mx-auto px-8">
+          <motion.div
+            className="relative w-full"
+            style={{ y: backgroundY }}
+          >
+            {/* Background Video - Aligned with sections below */}
+            <iframe
+              src="https://videos.sproutvideo.com/embed/7991dabb1e1de8ccf0/d596dc8976989f8d?playerTheme=dark&playerColor=2f3437&autoPlay=true&loop=true&showControls=false&muted=true"
+              className="w-full object-cover rounded-2xl"
+              style={{ 
+                minHeight: '80vh',
+                height: '80vh',
+                objectFit: 'cover',
+                objectPosition: 'center',
+                border: 'none'
+              }}
+              allow="autoplay; fullscreen"
+              allowFullScreen
+              title="Background Video"
+            />
+            
+            {/* Fallback for if video doesn't load */}
+            <img 
+              src="https://i.imgur.com/XkjW9Uv.jpeg"
+              alt="Fallback Background"
+              className="w-full object-cover opacity-0 rounded-2xl"
+              style={{ 
+                minHeight: '80vh',
+                height: '80vh',
+                objectFit: 'cover',
+                objectPosition: 'center'
+              }}
+              onLoad={(e) => {
+                const iframe = e.target.previousElementSibling;
+                if (!iframe || iframe.tagName !== 'IFRAME') {
+                  e.target.style.opacity = '1';
+                }
+              }}
+            />
+            
+            {/* Minimal overlay for depth */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent rounded-2xl" />
+          </motion.div>
+        </div>
       </div>
 
       {/* Email Capture Modal */}
