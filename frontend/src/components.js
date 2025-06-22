@@ -469,18 +469,18 @@ const PortfolioSection = () => {
             >
               <div className="bg-[#1a1a1a]/60 backdrop-blur-sm border border-white/5 overflow-hidden hover:bg-[#222]/70 hover:border-white/10 transition-all duration-500">
                 
-                <div className="relative overflow-hidden" style={{ height: project.hasVideo ? '500px' : '320px' }}>
+                <div className="relative overflow-hidden" style={{ height: project.hasVideo ? '600px' : '320px' }}>
                   {project.hasVideo ? (
-                    // Large Video for first project
+                    // Large Video for first project - No black edges
                     <iframe
                       src={project.videoSrc}
-                      className="w-full h-full object-cover"
+                      className="w-full h-full"
                       style={{ 
                         width: '100%',
                         height: '100%',
-                        objectFit: 'cover',
-                        objectPosition: 'center',
-                        border: 'none'
+                        border: 'none',
+                        transform: 'scale(1.1)',
+                        transformOrigin: 'center center'
                       }}
                       allow="autoplay; fullscreen"
                       allowFullScreen
