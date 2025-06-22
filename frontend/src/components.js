@@ -295,10 +295,15 @@ const Navigation = () => {
   );
 };
 
-// Hero Section - Simple Black Background with Typing Text Animation
+// Hero Section - Abstract Background Image with Electric Blue Headings
 const HeroSection = () => {
+  const { scrollY } = useScroll();
+  const backgroundY = useTransform(scrollY, [0, 800], [0, 200]);
+  
   const heroRef = useRef(null);
-  const textRef = useRef(null);
+  const headlineRef = useRef(null);
+  const subheadlineRef = useRef(null);
+  const learnMoreRef = useRef(null);
   
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -306,19 +311,21 @@ const HeroSection = () => {
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({ delay: 0.5 });
       
-      // Typing animation function
-      const typeText = (element, text, duration = 1.5) => {
-        element.textContent = '';
-        const chars = text.split('');
-        chars.forEach((char, index) => {
-          setTimeout(() => {
-            element.textContent += char;
-          }, (duration * 1000 / chars.length) * index);
-        });
-      };
+      tl.fromTo([headlineRef.current, subheadlineRef.current], 
+        { 
+          opacity: 0, 
+          y: 50
+        },
+        { 
+          opacity: 1, 
+          y: 0, 
+          duration: 1.2, 
+          stagger: 0.1, 
+          ease: "power3.out" 
+        }
+      );
       
-      // Text sequence with typing effect and color changes
-      tl.fromTo(textRef.current, 
+      tl.fromTo(learnMoreRef.current, 
         { 
           opacity: 0, 
           y: 20
@@ -327,79 +334,10 @@ const HeroSection = () => {
           opacity: 1, 
           y: 0, 
           duration: 0.8, 
-          ease: "power3.out",
-          onComplete: () => {
-            typeText(textRef.current, "it's your world", 1.5);
-          }
-        }
-      )
-      .to(textRef.current, {
-        duration: 2,
-        delay: 3,
-        ease: "power2.inOut",
-        onStart: () => {
-          textRef.current.textContent = '';
-          typeText(textRef.current, "we're just building it", 2);
-        }
-      })
-      // Color change to yellow - earlier timing
-      .to(textRef.current, {
-        duration: 0.4,
-        delay: 0.5,
-        ease: "power2.inOut",
-        onStart: () => {
-          textRef.current.style.color = '#FFD700';
-          textRef.current.style.textShadow = '0 0 20px rgba(255, 215, 0, 0.6), 0 0 40px rgba(255, 215, 0, 0.3)';
-        }
-      })
-      // Color change to blue - earlier timing
-      .to(textRef.current, {
-        duration: 0.4,
-        delay: 0.3,
-        ease: "power2.inOut",
-        onStart: () => {
-          textRef.current.style.color = '#00BFFF';
-          textRef.current.style.textShadow = '0 0 20px rgba(0, 191, 255, 0.6), 0 0 40px rgba(0, 191, 255, 0.3)';
-        }
-      })
-      // Dispersal effect - starts earlier
-      .to(textRef.current, {
-        duration: 1.5,
-        delay: 0.2,
-        ease: "power2.in",
-        y: 100,
-        opacity: 0,
-        scale: 1.2,
-        rotationX: 15,
-        filter: "blur(10px)",
-        onStart: () => {
-          // Create character dispersal effect
-          const text = textRef.current.textContent;
-          const chars = text.split('');
-          textRef.current.innerHTML = '';
-          
-          chars.forEach((char, index) => {
-            const span = document.createElement('span');
-            span.textContent = char === ' ' ? '\u00A0' : char;
-            span.style.display = 'inline-block';
-            span.style.color = '#00BFFF';
-            span.style.textShadow = '0 0 20px rgba(0, 191, 255, 0.6)';
-            textRef.current.appendChild(span);
-            
-            // Animate each character individually
-            gsap.to(span, {
-              duration: 1.5,
-              delay: index * 0.05,
-              y: Math.random() * 200 + 50,
-              x: (Math.random() - 0.5) * 100,
-              rotation: Math.random() * 360,
-              opacity: 0,
-              scale: 0.3,
-              ease: "power2.in"
-            });
-          });
-        }
-      });
+          ease: "power2.out" 
+        }, 
+        "-=0.4"
+      );
       
     }, heroRef);
 
@@ -407,22 +345,70 @@ const HeroSection = () => {
   }, []);
 
   return (
-    <section ref={heroRef} className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black">
+    <section ref={heroRef} className="relative min-h-screen flex flex-col overflow-hidden bg-black">
       
-      {/* Centered Typing Text - Positioned Higher */}
-      <div className="relative z-20 text-center px-8" style={{ transform: 'translateY(-15vh)' }}>
-        <h1
-          ref={textRef}
-          className="text-2xl md:text-3xl lg:text-4xl font-normal text-white leading-tight tracking-wide opacity-0 transition-all duration-300"
-          style={{
-            textShadow: '0 0 30px rgba(0, 0, 0, 0.8), 0 4px 8px rgba(0, 0, 0, 0.6), 0 0 60px rgba(255, 255, 255, 0.1)',
-            fontFamily: 'monospace',
-            minHeight: '1.5em'
+      {/* Abstract Background Image */}
+      <motion.div
+        className="absolute inset-0 w-full h-full"
+        style={{ y: backgroundY }}
+      >
+        <img 
+          src="https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2000&q=80"
+          alt="Abstract Iridescent Landscape"
+          className="w-full h-full object-cover"
+          style={{ 
+            width: '100vw',
+            height: '100vh',
+            objectFit: 'cover',
+            objectPosition: 'center'
           }}
-          data-cursor="hover"
-        >
-        </h1>
+        />
+        
+        {/* Dark overlay for text visibility */}
+        <div className="absolute inset-0 bg-black/40" />
+      </motion.div>
+
+      {/* Top Section with Headings - Aligned with ENDofDAIZY */}
+      <div className="relative z-10 pt-32 pb-8">
+        <div className="max-w-6xl mx-auto px-8">
+          {/* Headings - Left Aligned with ENDofDAIZY */}
+          <div className="text-left">
+            <h1
+              ref={headlineRef}
+              className="text-2xl md:text-3xl font-normal text-white mb-2 leading-tight tracking-normal opacity-0"
+            >
+              IT'S YOUR WORLD
+            </h1>
+            
+            <h2
+              ref={subheadlineRef}
+              className="text-2xl md:text-3xl font-normal text-white mb-6 leading-tight tracking-normal opacity-0"
+            >
+              WE'RE JUST BUILDING IT
+            </h2>
+
+            {/* Electric Blue Learn More Text */}
+            <div
+              ref={learnMoreRef}
+              onClick={() => setIsModalOpen(true)}
+              className="text-lg font-normal tracking-normal opacity-0 cursor-pointer hover:opacity-80 transition-opacity duration-300"
+              style={{ 
+                color: '#00BFFF',
+                textShadow: '0 0 20px rgba(0, 191, 255, 0.8), 0 0 40px rgba(0, 191, 255, 0.4)'
+              }}
+              data-cursor="hover"
+            >
+              LEARN MORE
+            </div>
+          </div>
+        </div>
       </div>
+
+      {/* Email Capture Modal */}
+      <EmailCaptureModal 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)} 
+      />
 
       {/* Email Capture Modal */}
       <EmailCaptureModal 
