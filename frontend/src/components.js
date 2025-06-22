@@ -275,7 +275,7 @@ const Navigation = () => {
             ))}
             <motion.button
               onClick={() => setIsModalOpen(true)}
-              className="bg-[#BAA4FF] text-black px-6 py-2 text-xs font-medium tracking-wide hover:bg-[#BAA4FF]/90 transition-all duration-500"
+              className="bg-[#00BFFF] text-black px-6 py-2 text-xs font-medium tracking-wide hover:bg-[#00BFFF]/90 transition-all duration-500"
               whileHover={{ scale: 1.02, y: -1 }}
               transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
               data-cursor="hover"
