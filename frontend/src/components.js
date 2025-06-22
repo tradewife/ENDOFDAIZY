@@ -395,8 +395,8 @@ const HeroSection = () => {
               src="https://videos.sproutvideo.com/embed/7991dabb1e1de8ccf0/d596dc8976989f8d?playerTheme=dark&playerColor=2f3437&autoPlay=true&loop=true&showControls=false&muted=true"
               className="w-full object-cover rounded-2xl"
               style={{ 
-                minHeight: '80vh',
-                height: '80vh',
+                minHeight: '95vh',
+                height: '95vh',
                 objectFit: 'cover',
                 objectPosition: 'center',
                 border: 'none'
