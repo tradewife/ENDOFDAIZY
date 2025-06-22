@@ -571,8 +571,8 @@ const ServicesSection = () => {
           <div className="text-center">
             <div className="bg-[#1a1a1a]/60 backdrop-blur-sm border border-white/5 p-8 rounded-2xl">
               <div className="flex items-center justify-center mb-8">
-                <div className="w-2 h-2 bg-[#BAA4FF] rounded-full mr-4"></div>
-                <h3 className="text-xs font-normal text-[#BAA4FF] tracking-widest">WORKING WITH</h3>
+                <div className="w-2 h-2 bg-[#00BFFF] rounded-full mr-4"></div>
+                <h3 className="text-xs font-normal text-[#00BFFF] tracking-widest">WORKING WITH</h3>
               </div>
               <div className="text-center">
                 <h4 className="text-white text-base mb-3">AI</h4>
