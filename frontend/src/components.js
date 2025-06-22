@@ -295,16 +295,12 @@ const Navigation = () => {
   );
 };
 
-// Hero Section - Full Screen Video with Text Color Changes and Dispersal Effect
+// Hero Section - Simple Black Background with Typing Text Animation
 const HeroSection = () => {
-  const { scrollY } = useScroll();
-  const backgroundY = useTransform(scrollY, [0, 800], [0, 200]);
-  
   const heroRef = useRef(null);
   const textRef = useRef(null);
   
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isVideoLoading, setIsVideoLoading] = useState(true);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -407,77 +403,12 @@ const HeroSection = () => {
       
     }, heroRef);
 
-    // Video loading simulation - 8 seconds to allow full text sequence
-    const videoLoadTimer = setTimeout(() => {
-      setIsVideoLoading(false);
-    }, 8000);
-
-    return () => {
-      ctx.revert();
-      clearTimeout(videoLoadTimer);
-    };
+    return () => ctx.revert();
   }, []);
 
   return (
     <section ref={heroRef} className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black">
       
-      {/* Full Screen Background Video */}
-      <motion.div
-        className="absolute inset-0 w-full h-full"
-        style={{ y: backgroundY }}
-      >
-        <iframe
-          src="https://videos.sproutvideo.com/embed/7991dabb1e1de8ccf0/d596dc8976989f8d?playerTheme=dark&playerColor=2f3437&autoPlay=true&loop=true&showControls=false&muted=true"
-          className="w-full h-full object-cover"
-          style={{ 
-            width: '100vw',
-            height: '100vh',
-            objectFit: 'cover',
-            objectPosition: 'center',
-            border: 'none',
-            opacity: isVideoLoading ? 0 : 1,
-            transition: 'opacity 1.5s ease-in-out'
-          }}
-          allow="autoplay; fullscreen"
-          allowFullScreen
-          title="Background Video"
-          onLoad={() => {
-            // Don't set loading to false immediately, let timer handle it
-          }}
-        />
-        
-        {/* Fallback for if video doesn't load */}
-        <img 
-          src="https://i.imgur.com/XkjW9Uv.jpeg"
-          alt="Fallback Background"
-          className="w-full h-full object-cover"
-          style={{ 
-            width: '100vw',
-            height: '100vh',
-            objectFit: 'cover',
-            objectPosition: 'center',
-            opacity: isVideoLoading ? 0 : 1,
-            transition: 'opacity 1.5s ease-in-out'
-          }}
-          onLoad={(e) => {
-            const iframe = e.target.previousElementSibling;
-            if (!iframe || iframe.tagName !== 'IFRAME') {
-              // Only show fallback if iframe failed, still wait for timer
-            }
-          }}
-        />
-        
-        {/* Dark overlay for text visibility - only when video is visible */}
-        {!isVideoLoading && (
-          <div className="absolute inset-0 bg-black/40" />
-        )}
-      </motion.div>
-
-      {/* Black Background During Loading */}
-      {isVideoLoading && (
-        <div className="absolute inset-0 z-10 bg-black" />
-      )}
-
       {/* Centered Typing Text - Positioned Higher */}
       <div className="relative z-20 text-center px-8" style={{ transform: 'translateY(-15vh)' }}>
         <h1
