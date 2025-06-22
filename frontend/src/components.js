@@ -107,7 +107,7 @@ const EmailCaptureModal = ({ isOpen, onClose }) => {
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
                     rows={4}
-                    className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-white/50 focus:border-[#BAA4FF] focus:outline-none transition-colors resize-none"
+                    className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-white/50 focus:border-[#00BFFF] focus:outline-none transition-colors resize-none"
                     required
                   />
                 </div>
