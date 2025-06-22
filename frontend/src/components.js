@@ -502,15 +502,17 @@ const HeroSection = () => {
   );
 };
 
-// Portfolio Section - WITH Ripple Background
+// Portfolio Section - WITH Video in First Project
 const PortfolioSection = () => {
   const projects = [
     {
-      title: "REDEFINING HUMAN PERFORMANCE",
-      description: "Enroute.health—New website and visual identity for a sports optimization company. Website Design + Framer Development, Brand Identity, Logo, Copywriting.",
+      title: "DREAMS VISUALIZED IN-HOUSE",
+      description: "4SITE.PRO—Revolutionary tech platform revolutionizing digital experiences. Complete tech ecosystem with advanced infrastructure, scalable solutions, and cutting-edge development.",
       image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71",
-      services: ["Website Design", "Framer Development", "Brand Identity", "Logo", "Copywriting"],
-      category: "SPORTS & PERFORMANCE"
+      services: ["Full-Stack Development", "Cloud Infrastructure", "Brand Identity", "Bespoke Video Sequence", "Tech Consulting"],
+      category: "TECH • INNOVATION",
+      hasVideo: true,
+      videoSrc: "https://videos.sproutvideo.com/embed/7991dabb1e1de8ccf0/d596dc8976989f8d?playerTheme=dark&playerColor=2f3437&autoPlay=true&loop=true&showControls=false&muted=true"
     },
     {
       title: "Smart Contract Security Audits",
@@ -551,11 +553,30 @@ const PortfolioSection = () => {
               <div className="bg-[#1a1a1a]/60 backdrop-blur-sm border border-white/5 overflow-hidden hover:bg-[#222]/70 hover:border-white/10 transition-all duration-500">
                 
                 <div className="relative h-80 overflow-hidden">
-                  <motion.img 
-                    src={project.image} 
-                    alt={project.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                  />
+                  {project.hasVideo ? (
+                    // Video for first project
+                    <iframe
+                      src={project.videoSrc}
+                      className="w-full h-full object-cover"
+                      style={{ 
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover',
+                        objectPosition: 'center',
+                        border: 'none'
+                      }}
+                      allow="autoplay; fullscreen"
+                      allowFullScreen
+                      title={project.title}
+                    />
+                  ) : (
+                    // Regular image for other projects
+                    <motion.img 
+                      src={project.image} 
+                      alt={project.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                    />
+                  )}
                   <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors duration-500" />
                 </div>
                 
@@ -564,7 +585,7 @@ const PortfolioSection = () => {
                   <p className="text-white/70 mb-6 text-base leading-relaxed">{project.description}</p>
                   <div className="flex flex-wrap gap-3 mb-6 justify-center">
                     {project.services.map((service, idx) => (
-                      <span key={idx} className="text-xs text-white/60 bg-white/5 px-3 py-1">
+                      <span key={idx} className="text-xs text-white/60 bg-white/5 px-3 py-1 rounded">
                         {service}
                       </span>
                     ))}
